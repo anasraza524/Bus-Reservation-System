@@ -32,7 +32,7 @@ int isUserExists(const char* userName){
 void login(){
 	char userName[20] , password[10], inputUsername[20];
 	int isvalid = 0 ;
-	
+	FILE *file = fopen("userSection.txt", "w");
 	redColor();
     printf("\n\n=========================================================================================\n");
     printf("\n\t\t\tWELCOME TO ONLINE BUS RESERVATION");
@@ -44,6 +44,7 @@ void login(){
     scanf("%s",&password);
     if(isUserExists(userName)== 200 && strcmp(password, "1234") == 0){
     	printf("\nLOGGED IN SUCCESSFULLY...\n");
+    	fprintf(file,"login");
     	return;
 	}else{
 		redColor();
@@ -127,9 +128,8 @@ void mainMenu() {
     }
     
 }
-void main(){
-	mainMenu();
-
+void home(){
+	
     int choice;
     char c;
     int x;
@@ -137,10 +137,7 @@ void main(){
     int randNum;
     srand(time(0));
     randNum = rand();
-    
-    
-    
-     do {
+	     do {
         system("cls");
         printf("\n\n=========================================================================================\n");
         printf("\n\t\t\t\tHOME SCREEN\n");
@@ -179,5 +176,33 @@ break;
                 break;
         }
     } while (choice != 5);
-}
 
+}
+void isFoldersExits(){
+	FILE *userSection = fopen("userSection.txt", "r");
+	FILE *userNameList = fopen("userNameList.txt", "r");
+	FILE *userDetails = fopen("userDetails.txt", "r");
+    if (userSection == NULL) {
+    FILE *userSection = fopen("userSection.txt", "w");
+    }
+	if(userNameList == NULL){
+		userNameList = fopen("userNameList.txt", "w");
+	}
+	if(userDetails == NULL){
+		userDetails = fopen("userDetails.txt", "w");
+	}
+    	return;
+}
+int main(){
+    isFoldersExits();
+    FILE *file = fopen("userSection.txt", "r");
+    char isLogin[100] ;
+	fscanf(file,"%s",isLogin);
+	
+	if(strcmp(isLogin, "login") ==0){
+		home();
+	}else{
+		mainMenu();
+	}
+    
+}
