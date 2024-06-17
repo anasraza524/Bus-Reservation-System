@@ -141,7 +141,16 @@ void displaySeatStatus(int busNumber) {
 
     // Display the seat status
     for (i = 1; i <= 32; i++) {
-        printf("Seat %02d: %s\n", i, busSeats[i] ? "BOOKED" : "EMPTY");
+    	if(busSeats[i]){
+    		redColor();
+    		printf("Seat %02d: BOOKED\n", i);
+    		resetColor();
+    		
+		}else{
+			greenColor();
+			printf("Seat %02d: EMPTY\n", i);
+			resetColor();
+		}
     }
 }
 void busLists() {
