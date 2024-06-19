@@ -16,6 +16,35 @@ void resetColor() {
     printf("\033[0m");
 }
 
+void blueColor() {
+    printf("\033[1;34m");
+}
+
+void splashScreen() {
+    char *message = "WELCOME TO ONLINE BUS RESERVATION SYSTEM";
+    int length = strlen(message);
+    int i,j,k;
+
+    system("cls");
+    for (i = 0; i < 1; i++) {
+        blueColor();
+        printf("\n\n\n\n\n\n\t\t\t");
+        for ( j = 0; j < length; j++) {
+            printf("%c", message[j]);
+            fflush(stdout);
+            usleep(50000); 
+        }
+        resetColor();
+        printf("\n\n\t\t\tLoading");
+        for ( k = 0; k < 3; k++) {
+            printf(".");
+            fflush(stdout);
+            usleep(500000); 
+        }
+        system("cls");
+    }
+}
+
 int isUserExists(const char* userName) {
     char fileUserName[20];
     FILE *file = fopen("userNameList.txt", "r");
@@ -35,7 +64,7 @@ void login() {
 	system("cls");
     FILE *file = fopen("userSection.txt", "w");
     char userName[20], password[10];
-    greenColor();
+    blueColor();
     printf("\n\n=========================================================================================\n");
     printf("\n\t\t\tWELCOME TO ONLINE BUS RESERVATION");
     printf("\n\n=========================================================================================\n\n");
@@ -50,6 +79,7 @@ void login() {
         greenColor();
         printf("\nLOGGED IN SUCCESSFULLY...\n");
         resetColor();
+        splashScreen();
         home();
     } else {
         redColor();
@@ -66,7 +96,7 @@ void signUp() {
     char userName[20];
     FILE *fp = fopen("userNameList.txt", "a");
 
-    redColor();
+    blueColor();
     printf("\n\n=========================================================================================\n");
     printf("\n\t\t\tLET'S GO TO YOUR DESTINATION");
     printf("\n\n=========================================================================================\n\n");
@@ -101,29 +131,55 @@ void signUp() {
 }
 
 void mainMenu() {
+	
     int userChoice;
+    main:
+    system("cls");
+    blueColor();
+    printf("\n\n=========================================================================================\n");
+    printf("\n\t\t\tONLINE BUS RESERVATION");
+    printf("\n\n=========================================================================================\n\n");
+    resetColor();
     printf(" \n1- SIGN UP\n");
     printf(" \n2- LOGIN\n");
     printf(" \n3- EXIT\n");
     printf("\nENTER YOUR CHOICE: ");
     scanf("%d", &userChoice);
 
-    switch (userChoice) {
-        case 1:
+    if(userChoice == 1){
+	system("cls");
             signUp();
-            break;
-        case 2:
-            login();
-            break;
-        case 3:
-            exit(0);
-        default:
-            redColor();
-            printf("\nINVALID CHOICE!\n");
-            resetColor();
-            mainMenu();
+            return;
     }
+    if(userChoice == 2){
+	        system("cls");
+            login();
+            return;
+    }
+    if(userChoice == 3){
+	        exit(0);
+    }
+    goto  main;
+//    switch (userChoice) {
+//        case 1:
+//        	system("cls");
+//            signUp();
+//            break;
+//        case 2:
+//        	system("cls");
+//            login();
+//            break;
+//        case 3:
+//            exit(0);
+//        default:
+//            redColor();
+//            printf("\nINVALID CHOICE!\n");
+//            resetColor();
+//           break;
+//    }
 }
+
+
 
 void displaySeatStatus(int busNumber) {
     int fileBusNumber, fileSeatNumber ,i;
@@ -152,7 +208,7 @@ void displaySeatStatus(int busNumber) {
 }
 
 void busLists() {
-    redColor();
+    blueColor();
     printf("-----------------------------------------------------------------------------------------");
     printf("\nBus.No\tName\t\t\tDestinations  \t\tCharges  \t\tTime\n");
     printf("-----------------------------------------------------------------------------------------");
@@ -185,7 +241,6 @@ busInput:
     }
     printf("\n");
     displaySeatStatus(busNum);
-    getch();
 }
 
 int isSeatExists(int busNumber, int seatNumber) {
@@ -265,19 +320,29 @@ void home() {
     char busSeat[33][9];
     do {
         system("cls");
+        blueColor();
         printf("\n\n=========================================================================================\n");
         printf("\n\t\t\t\tHOME SCREEN\n");
         printf("\n\n=========================================================================================\n\n");
+        resetColor();
         printf(" \n1- TICKET RESERVATION");
         printf(" \n2- BUS STATUS");
         printf(" \n3- TICKET CANCELLATION");
         printf(" \n5- LOGOUT");
+        blueColor();
         printf("\n\n=========================================================================================\n\n");
+		resetColor();
         printf("\nENTER YOUR CHOICE :");
         scanf("%d", &choice);
+
         switch (choice) {
             case 1:
                 system("cls");
+                blueColor();
+                printf("\n\n=========================================================================================\n");
+                printf("\n\t\t\t\tTICKET RESERVATION\n");
+                printf("\n\n=========================================================================================\n\n");
+                resetColor();
                 busLists();
                 int CustId, choice, seats;
                 busChoice:
@@ -317,12 +382,12 @@ void home() {
                     CustId = choice * 1000 + seatNumber;
                     busSeat[choice][seatNumber] = 1;
                     greenColor();
-                    printf("\n SEAT NO. %d HAS BEEN BOOKED SUCESSFULLY",seatNumber);
+                    printf("\n SEAT NO. %d HAS BEEN BOOKED SUCCESSFULLY",seatNumber);
                     resetColor();
                     printf("\n\n==================================================================================\n\n");
                 }
                 redColor();
-                printf("\nPLEASE NOTE DOWN YOUR BUS/SEAT NUMBER FOR CANCEL BOOKING TICKETS!!\n");
+                printf("\nPLEASE NOTE DOWN YOUR BUS AND SEAT NUMBER FOR CANCEL BOOKING TICKETS!!\n");
                 resetColor();
                 printf("PRESS 'ENTER' KEY TO CONTINUE ");
                 getch();
@@ -330,10 +395,22 @@ void home() {
                 break;
             case 2:
                 system("cls");
+                blueColor();
+                printf("\n\n=========================================================================================\n");
+                printf("\n\t\t\t\tBUS STATUS\n");
+                printf("\n\n=========================================================================================\n\n");
+                resetColor();
                 status();
+                printf("PRESS 'ENTER' KEY TO CONTINUE ");
+                getch();
                 break;
             case 3:
                 system("cls");
+                blueColor();
+                printf("\n\n=========================================================================================\n");
+                printf("\n\t\t\t\tTICKET CANCELLATION\n");
+                printf("\n\n=========================================================================================\n\n");
+                resetColor();
                 int seatNum, busNum;
                 printf("\n\nENTER YOUR BUS NUMBER : ");
                 scanf("%d", &busNum);
