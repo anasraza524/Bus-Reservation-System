@@ -32,9 +32,10 @@ int isUserExists(const char* userName) {
 }
 
 void login() {
+	system("cls");
     FILE *file = fopen("userSection.txt", "w");
     char userName[20], password[10];
-    redColor();
+    greenColor();
     printf("\n\n=========================================================================================\n");
     printf("\n\t\t\tWELCOME TO ONLINE BUS RESERVATION");
     printf("\n\n=========================================================================================\n\n");
@@ -54,6 +55,8 @@ void login() {
         redColor();
         printf("\nINVALID DETAILS TRY AGAIN...\n");
         resetColor();
+        printf("PRESS 'ENTER' KEY TO TRY AGAIN ");
+        getch();
         system("cls");
         login();
     }
@@ -243,11 +246,18 @@ void cancelSeat(int busNumber, int seatNumber) {
     if (seatFound) {
         remove("busSeatList.txt");
         rename("tempBusSeatList.txt", "busSeatList.txt");
+        greenColor();
         printf("\n   SEAT CANCELLATION SUCCESSFUL.\n\n");
+        resetColor();
+        
     } else {
         remove("tempBusSeatList.txt");
+        redColor();
         printf("\n   SEAT NOT FOUND.\n\n");
+        resetColor();
     }
+    printf("PRESS 'ENTER' KEY TO CONTINUE ");
+    getch();
 }
 
 void home() {
@@ -311,7 +321,6 @@ void home() {
                     resetColor();
                     printf("\n\n==================================================================================\n\n");
                 }
-//                printf("\nYOUR RESERVATION NUMBER IS : ");
                 redColor();
                 printf("\nPLEASE NOTE DOWN YOUR BUS/SEAT NUMBER FOR CANCEL BOOKING TICKETS!!\n");
                 resetColor();
@@ -337,6 +346,7 @@ void home() {
                     FILE *file = fopen("userSection.txt", "w");
                     fprintf(file, "logout");
                     fclose(file);
+                    system("cls");
                     mainMenu();
                 }
                 break;
