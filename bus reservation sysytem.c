@@ -19,19 +19,17 @@ void resetColor() {
 int isUserExists(const char* userName) {
     char fileUserName[20];
     FILE *file = fopen("userNameList.txt", "r");
-    if (file == NULL) return 502; // Database not accessible error
+    if (file == NULL) return 502;
 
     while (fscanf(file, "%s", fileUserName) != EOF) {
         if (strcmp(fileUserName, userName) == 0) {
             fclose(file);
-            return 200; // User exists
+            return 200;
         }
     }
     fclose(file);
-    return 402; // User does not exist
+    return 402;
 }
-
-
 
 void login() {
     FILE *file = fopen("userSection.txt", "w");
@@ -124,35 +122,32 @@ void mainMenu() {
     }
 }
 
-
 void displaySeatStatus(int busNumber) {
     int fileBusNumber, fileSeatNumber ,i;
-    int busSeats[33] = {0}; // Assuming bus seats are numbered 1 to 32
+    int busSeats[33] = {0};
 
     FILE *file = fopen("busSeatList.txt", "r");
 
-
     while (fscanf(file, "%d %d", &fileBusNumber, &fileSeatNumber) != EOF) {
         if (fileBusNumber == busNumber) {
-            busSeats[fileSeatNumber] = 1; // Mark the seat as booked
+            busSeats[fileSeatNumber] = 1;
         }
     }
     fclose(file);
 
-    // Display the seat status
     for (i = 1; i <= 32; i++) {
-    	if(busSeats[i]){
-    		redColor();
-    		printf("Seat %02d: BOOKED\n", i);
-    		resetColor();
-    		
-		}else{
-			greenColor();
-			printf("Seat %02d: EMPTY\n", i);
-			resetColor();
-		}
+        if(busSeats[i]){
+            redColor();
+            printf("Seat %02d: BOOKED\n", i);
+            resetColor();
+        } else {
+            greenColor();
+            printf("Seat %02d: EMPTY\n", i);
+            resetColor();
+        }
     }
 }
+
 void busLists() {
     redColor();
     printf("-----------------------------------------------------------------------------------------");
@@ -173,39 +168,36 @@ void busLists() {
     getch();
 }
 
-
-void status()
-{
-  int busNum;
-  busLists();
+void status() {
+    int busNum;
+    busLists();
 busInput:
-  printf("\n\nENTER YOUR BUS NUMBER : ");
-  scanf("%d", &busNum);
-  if (busNum <= 0 || busNum >= 10)
-  {
-    redColor();
-    printf("\n  PLEASE ENTER CORRECT BUS NUMBER !!\n");
-    resetColor();
-    goto busInput;
-  }
-  printf("\n");
-  displaySeatStatus(busNum);
-  getch();
+    printf("\n\nENTER YOUR BUS NUMBER : ");
+    scanf("%d", &busNum);
+    if (busNum <= 0 || busNum >= 10) {
+        redColor();
+        printf("\n  PLEASE ENTER CORRECT BUS NUMBER !!\n");
+        resetColor();
+        goto busInput;
+    }
+    printf("\n");
+    displaySeatStatus(busNum);
+    getch();
 }
 
 int isSeatExists(int busNumber, int seatNumber) {
     int fileBusNumber, fileSeatNumber;
     FILE *file = fopen("busSeatList.txt", "r");
-    if (file == NULL) return 502; // Database not accessible error
+    if (file == NULL) return 502;
 
     while (fscanf(file, "%d %d", &fileBusNumber, &fileSeatNumber) != EOF) {
         if (fileBusNumber == busNumber && fileSeatNumber == seatNumber) {
             fclose(file);
-            return 402; // Seat exists
+            return 402;
         }
     }
     fclose(file);
-    return 200; // Seat does not exist
+    return 200;
 }
 
 void bookSeat(int busNumber, int seatNumber) {
@@ -222,6 +214,7 @@ void bookSeat(int busNumber, int seatNumber) {
         }
     }
 }
+
 void cancelSeat(int busNumber, int seatNumber) {
     int fileBusNumber, fileSeatNumber;
     int seatFound = 0;
@@ -238,29 +231,28 @@ void cancelSeat(int busNumber, int seatNumber) {
 
     while (fscanf(file, "%d %d", &fileBusNumber, &fileSeatNumber) != EOF) {
         if (fileBusNumber == busNumber && fileSeatNumber == seatNumber) {
-            seatFound = 1; // Mark seat as found
+            seatFound = 1;
         } else {
             fprintf(tempFile, "%d %d\n", fileBusNumber, fileSeatNumber);
         }
     }
-    
+
     fclose(file);
     fclose(tempFile);
 
     if (seatFound) {
-        // Replace the original file with the temporary file
         remove("busSeatList.txt");
         rename("tempBusSeatList.txt", "busSeatList.txt");
         printf("\n   SEAT CANCELLATION SUCCESSFUL.\n\n");
     } else {
-        // If seat was not found, delete the temporary file
         remove("tempBusSeatList.txt");
         printf("\n   SEAT NOT FOUND.\n\n");
     }
 }
+
 void home() {
     int choice;
-    char busSeat[33][9] ;
+    char busSeat[33][9];
     do {
         system("cls");
         printf("\n\n=========================================================================================\n");
@@ -269,7 +261,6 @@ void home() {
         printf(" \n1- TICKET RESERVATION");
         printf(" \n2- BUS STATUS");
         printf(" \n3- TICKET CANCELLATION");
-//        printf(" \n4- USER INFORMATION");
         printf(" \n5- LOGOUT");
         printf("\n\n=========================================================================================\n\n");
         printf("\nENTER YOUR CHOICE :");
@@ -279,81 +270,68 @@ void home() {
                 system("cls");
                 busLists();
                 int CustId, choice, seats;
-
-    busChoice:
-      printf("\n\nCHOOSE YOUR BUS  : ");
-      scanf("%d", &choice);
-      if (choice <= 0 || choice > 9)
-      {
-        redColor();
-        printf("\nENTER VALID BUS NUMBER !! \n");
-        resetColor();
-        getch();
-        goto busChoice;
-      }
-      printf("\n");
-    displaySeatStatus(choice);
-//    busSeatChoice:
-//      printf("\n\nNO. OF SEATS YOU NEED TO BOOK : ");
-//      scanf("%d", &seats);
-//      if (seats <= 0 || seats > 32)
-//      {
-//        redColor();
-//        printf("\nENTER VALID SEAT NUMBER!!\n");
-//        resetColor();
-//        goto busSeatChoice;
-//      }
-     
-      int seatNumber , i ;
-      for (i = 1; i <= seats; i++)
-      {
-        printf("\n\n==================================================================================\n\n");
-      seat:
-        printf("   ENTER THE SEAT NUMBER: ");
-        scanf("%d", &seatNumber);
-        if (seatNumber <= 0 || seatNumber > 32)
-        {
-          redColor();
-          printf("\n   ENTER VALID SEAT NUMBER!!\n\n");
-          resetColor();
-          goto seat;
-        }
-         bookSeat(choice, seatNumber);
-        CustId = choice * 1000 + seatNumber;
-        busSeat[choice][seatNumber] = 1;
-        redColor();
-        printf("\n   YOUR CUSTOMER ID IS : %d", CustId);
-        resetColor();
-        printf("\n\n==================================================================================\n\n");
-      }
-      printf("\nYOUR RESERVATION NUMBER IS : ");
-      redColor();
-//      printf("%d\n", randomNum);
-      printf("\nPLEASE NOTE DOWN YOUR RESERVATION NUMBER FOR CANCEL BOOKING TICKETS!!\n");
-      resetColor();
-      printf("PRESS 'ENTER' KEY TO CONTINUE ");
-      getch();
-      home();
-      break;
+                busChoice:
+                printf("\n\nCHOOSE YOUR BUS  : ");
+                scanf("%d", &choice);
+                if (choice <= 0 || choice > 9) {
+                    redColor();
+                    printf("\nENTER VALID BUS NUMBER !! \n");
+                    resetColor();
+                    getch();
+                    goto busChoice;
+                }
+                printf("\n");
+                displaySeatStatus(choice);
+                int seatNumber, i ;
+                printf("\n\nNO. OF SEATS YOU NEED TO BOOK : ");
+                scanf("%d", &seats);
+                if(seats>5){
+                redColor();
+                printf("\n   YOU CAN ONLY BOOK MAX 5 SEATS\n\n");
+                resetColor();
+                getch();
+                goto busChoice;
+				}
+                printf("\n\n==================================================================================\n\n");
+                for (i = 1; i <= seats; i++) {
+                    seat:
+                    printf("   ENTER THE SEAT NUMBER: ");
+                    scanf("%d", &seatNumber);
+                    if (seatNumber <= 0 || seatNumber > 32) {
+                        redColor();
+                        printf("\n   ENTER VALID SEAT NUMBER!!\n\n");
+                        resetColor();
+                        goto seat;
+                    }
+                    bookSeat(choice, seatNumber);
+                    CustId = choice * 1000 + seatNumber;
+                    busSeat[choice][seatNumber] = 1;
+                    greenColor();
+                    printf("\n SEAT NO. %d HAS BEEN BOOKED SUCESSFULLY",seatNumber);
+                    resetColor();
+                    printf("\n\n==================================================================================\n\n");
+                }
+//                printf("\nYOUR RESERVATION NUMBER IS : ");
+                redColor();
+                printf("\nPLEASE NOTE DOWN YOUR BUS/SEAT NUMBER FOR CANCEL BOOKING TICKETS!!\n");
+                resetColor();
+                printf("PRESS 'ENTER' KEY TO CONTINUE ");
+                getch();
+                home();
+                break;
             case 2:
                 system("cls");
                 status();
                 break;
             case 3:
-            	                system("cls");
-            	int seatNum , busNum;
-
-                  printf("\n\nENTER YOUR BUS NUMBER : ");
-                  scanf("%d", &busNum);
-                  printf("\n\nENTER YOUR SEAT NUMBER : ");
-                  scanf("%d", &busNum);
-                  cancelSeat(busNum,seatNum);
-                break;
-            case 4:
                 system("cls");
-//                status()
-                // Add user information functionality
-//                break;
+                int seatNum, busNum;
+                printf("\n\nENTER YOUR BUS NUMBER : ");
+                scanf("%d", &busNum);
+                printf("\n\nENTER YOUR SEAT NUMBER : ");
+                scanf("%d", &seatNum);
+                cancelSeat(busNum, seatNum);
+                break;
             case 5:
                 {
                     FILE *file = fopen("userSection.txt", "w");
@@ -376,7 +354,7 @@ void isFoldersExist() {
     FILE *userNameList = fopen("userNameList.txt", "r");
     FILE *userDetails = fopen("userDetails.txt", "r");
     FILE *busSeatList = fopen("busSeatList.txt", "r");
-	if (userSection == NULL) {
+    if (userSection == NULL) {
         userSection = fopen("userSection.txt", "w");
     }
     if (userNameList == NULL) {
