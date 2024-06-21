@@ -21,7 +21,7 @@ void blueColor() {
 }
 
 void splashScreen() {
-    char *message = "WELCOME TO ONLINE BUS RESERVATION SYSTEM";
+    char *message = "WELCOME TO BUS RESERVATION SYSTEM";
     int length = strlen(message);
     int i,j,k;
 
@@ -66,7 +66,7 @@ void login() {
     char userName[20], password[10];
     blueColor();
     printf("\n\n=========================================================================================\n");
-    printf("\n\t\t\tWELCOME TO ONLINE BUS RESERVATION");
+    printf("\n\t\t\tWELCOME TO BUS RESERVATION");
     printf("\n\n=========================================================================================\n\n");
     resetColor();
     printf("\n\nENTER USERNAME: ");
@@ -137,7 +137,7 @@ void mainMenu() {
     system("cls");
     blueColor();
     printf("\n\n=========================================================================================\n");
-    printf("\n\t\t\tONLINE BUS RESERVATION");
+    printf("\n\t\t\t BUS RESERVATION");
     printf("\n\n=========================================================================================\n\n");
     resetColor();
     printf(" \n1- SIGN UP\n");
