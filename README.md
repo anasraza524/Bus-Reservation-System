@@ -1,6 +1,6 @@
 # Online Bus Reservation System
 
-![Splash Screen](splash_screen.png)
+![Watch the video](https://github.com/anasraza524/Bus-Reservation-System/edit/main/demo.mp4)
 
 ## Description
 
